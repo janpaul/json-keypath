@@ -107,20 +107,18 @@ class JsonKeypathWidget(private val project: Project) :
         var current: PsiElement? = element
 
         while (current != null && current !is JsonFile) {
-            when (val parent = current.parent) {
-                is JsonProperty -> {
-                    if (current == parent.nameElement || current == parent.value) {
-                        parts.add(0, parent.name)
-                    }
-                    current = parent.parent
+            when {
+                current is JsonProperty -> {
+                    parts.add(0, current.name)
+                    current = current.parent // -> JsonObject
                 }
-                is JsonArray -> {
-                    val index = parent.valueList.indexOf(current)
+                current is JsonObject && current.parent is JsonArray -> {
+                    val array = current.parent as JsonArray
+                    val index = array.valueList.indexOf(current)
                     if (index >= 0) parts.add(0, index.toString())
-                    current = parent.parent
+                    current = array.parent // -> JsonProperty
                 }
-                is JsonObject -> current = parent.parent
-                else -> current = parent
+                else -> current = current.parent
             }
         }
 
