@@ -10,5 +10,5 @@
 - Autocomplete dialog with live filtering of all keypaths in the current file
 - Array support using numeric indices (e.g. `foo.items.0.name`)
 - Status bar widget showing the keypath of the element under the cursor
-- Click status bar widget to copy current keypath to clipboard
-- Navigation history — dialog remembers last 10 used keypaths
+- Click the status bar widget to copy the current keypath to the clipboard
+- Navigation history — dialog remembers the last 10 used keypaths
