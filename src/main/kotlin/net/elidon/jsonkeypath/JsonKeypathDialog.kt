@@ -29,6 +29,8 @@ class JsonKeypathDialog(
     private val editor: Editor
 ) : DialogWrapper(editor.project) {
 
+    private val project = editor.project!!
+    private val history = KeypathHistory(project)
     private val allKeypaths = mutableListOf<KeypathEntry>()
     private val listModel = DefaultListModel<String>()
     private val list = JBList(listModel)
@@ -106,15 +108,24 @@ class JsonKeypathDialog(
 
     private fun refreshList(filter: String) {
         listModel.clear()
-        allKeypaths
-            .filter { it.keypath.contains(filter, ignoreCase = true) }
-            .forEach { listModel.addElement(it.keypath) }
+        if (filter.isEmpty()) {
+            // History bovenaan
+            history.getAll().forEach { listModel.addElement("▸ $it") }
+            // Dan alle keypaden
+            allKeypaths.forEach { listModel.addElement(it.keypath) }
+        } else {
+            allKeypaths
+                .filter { it.keypath.contains(filter, ignoreCase = true) }
+                .forEach { listModel.addElement(it.keypath) }
+        }
         if (listModel.size() > 0) list.selectedIndex = 0
     }
 
     private fun navigateToSelected() {
         val selected = list.selectedValue ?: return
-        val entry = allKeypaths.find { it.keypath == selected } ?: return
+        val keypath = selected.removePrefix("▸ ")
+        val entry = allKeypaths.find { it.keypath == keypath } ?: return
+        history.add(keypath)
         editor.caretModel.moveToOffset(entry.offset)
         editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
         close(OK_EXIT_CODE)
