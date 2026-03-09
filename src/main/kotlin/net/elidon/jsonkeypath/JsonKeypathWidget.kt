@@ -40,7 +40,19 @@ class JsonKeypathWidget(private val project: Project) :
     override fun getText() = currentKeypath
     override fun getTooltipText() = "JSON Keypath at cursor"
     override fun getAlignment() = Component.LEFT_ALIGNMENT
-    override fun getClickConsumer() = null
+
+    override fun getClickConsumer() = com.intellij.util.Consumer<MouseEvent> {
+        if (currentKeypath.isNotEmpty()) {
+            val clipboard = java.awt.Toolkit.getDefaultToolkit().systemClipboard
+            val selection = java.awt.datatransfer.StringSelection(currentKeypath)
+            clipboard.setContents(selection, selection)
+
+            com.intellij.notification.NotificationGroupManager.getInstance()
+                .getNotificationGroup("JSON Keypath")
+                .createNotification("Copied: <b>$currentKeypath</b>", com.intellij.notification.NotificationType.INFORMATION)
+                .notify(project)
+        }
+    }
 
     override fun install(statusBar: StatusBar) {
         this.statusBar = statusBar

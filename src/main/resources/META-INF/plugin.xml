@@ -28,5 +28,6 @@
                 implementation="net.elidon.jsonkeypath.JsonKeypathWidgetFactory"
                 id="JsonKeypathWidget"
                 order="first"/>
+        <notificationGroup id="JSON Keypath" displayType="BALLOON" isLogByDefault="false"/>
     </extensions>
 </idea-plugin>
