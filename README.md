@@ -18,11 +18,10 @@
 - [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+Navigate to any element in a JSON file using a dot-separated keypath like `foo.bar.baz`.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+Place your cursor anywhere in a JSON file and trigger **Go to JSON Keypath** via the Navigate menu or `Ctrl+Shift+K`.
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
 <!-- Plugin description end -->
 
 ## Installation

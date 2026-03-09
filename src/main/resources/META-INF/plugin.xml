@@ -1,15 +1,32 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.janpaul.jsonkeypath</id>
-    <name>json-keypath</name>
-    <vendor>janpaul</vendor>
+    <id>net.elidon.jsonkeypath</id>
+    <name>JSON Keypath Navigator</name>
+    <vendor url="https://github.com/janpaul">janpaul</vendor>
+
+    <description><![CDATA[
+        Navigate to any element in a JSON file using a keypath like <code>foo.bar.baz</code>.<br/>
+        Place your cursor anywhere in a JSON file and use <b>Navigate → Go to JSON Keypath</b>.
+    ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <actions>
+        <action
+                id="JsonKeypath.Navigate"
+                class="net.elidon.jsonkeypath.GoToJsonKeypathAction"
+                text="Go to JSON Keypath..."
+                description="Navigate to a JSON element by keypath">
+            <add-to-group group-id="GoToMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift K"/>
+        </action>
+    </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.janpaul.jsonkeypath.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.janpaul.jsonkeypath.startup.MyProjectActivity" />
+        <statusBarWidgetFactory
+                implementation="net.elidon.jsonkeypath.JsonKeypathWidgetFactory"
+                id="JsonKeypathWidget"
+                order="first"/>
     </extensions>
 </idea-plugin>
