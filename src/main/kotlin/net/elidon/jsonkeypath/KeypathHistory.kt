@@ -13,8 +13,8 @@ class KeypathHistory(private val project: Project) {
 
     fun add(keypath: String) {
         val current = getAll().toMutableList()
-        current.remove(keypath) // dedupliceren
-        current.add(0, keypath) // meest recent bovenaan
+        current.remove(keypath) // de-duplicate
+        current.add(0, keypath) // most recent item at the top
         val trimmed = current.take(MAX_SIZE)
         PropertiesComponent.getInstance(project)
             .setValue(KEY, trimmed.joinToString(SEPARATOR))
