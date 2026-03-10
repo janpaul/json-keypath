@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-03-09
+### Changed
+- First stable release following successful private beta
+- Dependency updates through Dependabot
+
 ## [0.0.1] - 2026-03-07
 ### Added
 - Navigate to any JSON element by keypath using `Ctrl+Shift+K`
