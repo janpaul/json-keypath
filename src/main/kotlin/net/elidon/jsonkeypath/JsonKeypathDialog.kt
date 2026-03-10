@@ -3,8 +3,6 @@ package net.elidon.jsonkeypath
 import com.intellij.json.psi.JsonArray
 import com.intellij.json.psi.JsonFile
 import com.intellij.json.psi.JsonObject
-import com.intellij.json.psi.JsonProperty
-import com.intellij.json.psi.JsonValue
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ScrollType
 import com.intellij.openapi.ui.DialogWrapper
@@ -25,7 +23,7 @@ import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 
 class JsonKeypathDialog(
-    private val file: JsonFile,
+    private val filevent: JsonFile,
     private val editor: Editor
 ) : DialogWrapper(editor.project) {
 
@@ -63,15 +61,15 @@ class JsonKeypathDialog(
 
         // Live filter while typing
         searchField.document.addDocumentListener(object : DocumentListener {
-            override fun insertUpdate(e: DocumentEvent) = refreshList(searchField.text)
-            override fun removeUpdate(e: DocumentEvent) = refreshList(searchField.text)
-            override fun changedUpdate(e: DocumentEvent) = refreshList(searchField.text)
+            override fun insertUpdate(event: DocumentEvent) = refreshList(searchField.text)
+            override fun removeUpdate(event: DocumentEvent) = refreshList(searchField.text)
+            override fun changedUpdate(event: DocumentEvent) = refreshList(searchField.text)
         })
 
         // Keyboard navigation from search field into list
         searchField.addKeyListener(object : KeyAdapter() {
-            override fun keyPressed(e: KeyEvent) {
-                when (e.keyCode) {
+            override fun keyPressed(event: KeyEvent) {
+                when (event.keyCode) {
                     KeyEvent.VK_DOWN -> {
                         if (listModel.size() > 0) {
                             list.requestFocus()
@@ -86,8 +84,8 @@ class JsonKeypathDialog(
 
         // Enter in list navigates
         list.addKeyListener(object : KeyAdapter() {
-            override fun keyPressed(e: KeyEvent) {
-                when (e.keyCode) {
+            override fun keyPressed(event: KeyEvent) {
+                when (event.keyCode) {
                     KeyEvent.VK_ENTER -> navigateToSelected()
                     KeyEvent.VK_ESCAPE -> doCancelAction()
                 }
@@ -96,8 +94,8 @@ class JsonKeypathDialog(
 
         // Double click navigates
         list.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 2) navigateToSelected()
+            override fun mouseClicked(event: MouseEvent) {
+                if (event.clickCount == 2) navigateToSelected()
             }
         })
 
@@ -132,7 +130,7 @@ class JsonKeypathDialog(
     }
 
     private fun buildKeypaths() {
-        val root = file.topLevelValue as? JsonObject ?: return
+        val root = filevent.topLevelValue as? JsonObject ?: return
         collectKeypaths(root, "")
     }
 
